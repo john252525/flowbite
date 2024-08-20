@@ -6,6 +6,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BalanceController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentController;
+
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
 // Гостевая группа
@@ -31,7 +33,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         // Список аккаунтов
         Route::get('/', [AccountController::class, 'index'])->name('home');
-        Route::post('/list/{type}', [AccountController::class, 'list'])->name('list');
+        Route::post('/action', [AccountController::class, 'action'])->name('action');
 
         Route::post('/add', [AccountController::class, 'add'])->name('add');
         Route::post('/delete', [AccountController::class, 'delete'])->name('delete');
@@ -70,3 +72,5 @@ Route::group(['middleware' => 'admin'], function () {
 
 // Уведомления платежной системы
 Route::post('notifications/{type}', [PaymentController::class, 'notifications'])->name('notifications');
+ 
+Route::get('/greeting/{locale}', [HomeController::class, 'setLocale']);
