@@ -189,7 +189,7 @@ class ActionsController extends Controller
 
     public function updateSettings(Request $request)
     {
-        $webhooks = explode('\n', $request->webhooks);
+        $webhooks = explode("\n", $request->webhooks);
 
         $response = $this->__post('updateAccount', [
             'webhookUrls' => $webhooks
