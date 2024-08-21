@@ -8,7 +8,6 @@ use App\Http\Controllers\Account\DeleteController;
 use App\Http\Controllers\Account\ListController;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\View\View;
 
 class AccountController extends Controller
@@ -27,7 +26,7 @@ class AccountController extends Controller
         if(!$request->platform || !in_array($request->platform, ['telegram', 'whatsapp']))
             return [
                 'status' => 'error',
-                'message' => __('Необходимо передать платформу')
+                'message' => __('account.errors.required_platform')
             ];
 
         $actions = new ActionsController();
@@ -54,14 +53,14 @@ class AccountController extends Controller
 
                 return $delete->account($request);
 
-            // Скриншот, Включение, Выключение, Смена прокси, Сброс, Связать через QR, Связать через код, Проверить код
-            case 'screenshot': case 'setState': case 'forceStop': case 'getNewProxy': case 'Reset': case 'disablePhoneAuth': case 'enablePhoneAuth': case 'getAuthCode':
+            // Настройки, Скриншот, Вывод скриншот, Включение, Выключение, Смена прокси, Сброс, Связать через QR, Связать через код, Проверить код, Обновление WebhookURLs
+            case 'settings': case 'screenshot': case 'showScreenshot': case 'setState': case 'forceStop': case 'getNewProxy': case 'Reset': case 'disablePhoneAuth': case 'enablePhoneAuth': case 'getAuthCode': case 'updateSettings':
                 return $actions->{$request->type}($request);
 
             default:
                 return [
                     'status' => 'error',
-                    'message' => __('Неправильный тип данных')
+                    'message' => __('account.errors.wrong_type')
                 ];
         }
     }

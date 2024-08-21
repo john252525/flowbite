@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Account;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 class ActionsController extends Controller
 {
@@ -16,16 +18,25 @@ class ActionsController extends Controller
 
         $response = Http::get($this->__api('screenshot').'?token='.$user->token.'&login='.$request->login.'&source='.$request->platform);
 
-        if(isset($response['status']) && $response['status'] == 'ok')
+        if(isset($response['status']) && $response['status'] == 'error')
             return [
-                'status' => 'success',
-                'image' => $response
+                'status' => 'error',
+                'message' => __('messages.account.errors.action')
             ];
-            
+
         return [
-            'status' => 'error',
-            'message' => __('Не удалось выполнить операцию')
+            'status' => 'success',
+            'message' => __('messages.account.success.action')
         ];
+    }
+
+    public function showScreenshot(Request $request)
+    {
+        $user = $request->user();
+
+        $response = Http::get($this->__api('screenshot').'?token='.$user->token.'&login='.$request->login.'&source='.$request->platform);
+
+        return $response;
     }
 
     public function setState(Request $request)
@@ -37,12 +48,12 @@ class ActionsController extends Controller
         if(isset($response['status']) && $response['status'] == 'ok')
             return [
                 'status' => 'success',
-                'message' => __('Операция успешно выполнена')
+                'message' => __('messages.account.success.action')
             ];
 
         return [
             'status' => 'error',
-            'message' => __('Не удалось выполнить операцию')
+            'message' => __('messages.account.errors.action')
         ];
     }
 
@@ -53,12 +64,12 @@ class ActionsController extends Controller
         if(isset($response['status']) && $response['status'] == 'ok')
             return [
                 'status' => 'success',
-                'message' => __('Операция успешно выполнена')
+                'message' => __('messages.account.success.action')
             ];
 
         return [
             'status' => 'error',
-            'message' => __('Не удалось выполнить операцию')
+            'message' => __('messages.account.errors.action')
         ];
     }
 
@@ -69,12 +80,12 @@ class ActionsController extends Controller
         if(isset($response['status']) && $response['status'] == 'ok')
             return [
                 'status' => 'success',
-                'message' => __('Операция успешно выполнена')
+                'message' => __('messages.account.success.action')
             ];
 
         return [
             'status' => 'error',
-            'message' => __('Не удалось выполнить операцию')
+            'message' => __('messages.account.errors.action')
         ];
     }
 
@@ -93,7 +104,7 @@ class ActionsController extends Controller
         
         return [
             'status' => 'success',
-            'message' => __('Операция успешно выполнена')
+            'message' => __('messages.account.success.action')
         ];
     }
 
@@ -104,28 +115,42 @@ class ActionsController extends Controller
         if(isset($response['status']) && $response['status'] == 'ok')
             return [
                 'status' => 'success',
-                'message' => __('Операция успешно выполнена')
+                'message' => __('messages.account.success.action')
             ];
 
         return [
             'status' => 'error',
-            'message' => __('Не удалось выполнить операцию')
+            'message' => __('messages.account.errors.action')
         ];
     }
 
     public function enablePhoneAuth(Request $request)
     {
-        $response = $this->__post('enablePhoneAuth', [], $request);
+        $validation = Validator::make($request->all(), [
+            'phone' => 'phone',
+        ]);
+
+        if($validation->fails())
+            return [
+                'status' => 'error',
+                'message' => $validation->errors()->first()
+            ];
+
+        $phone = substr($request->phone, 1);
+
+        $response = $this->__post('enablePhoneAuth', [
+            'phone' => $phone
+        ], $request);
 
         if(isset($response['status']) && $response['status'] == 'ok')
             return [
                 'status' => 'success',
-                'message' => __('Операция успешно выполнена')
+                'message' => __('messages.account.success.action')
             ];
 
         return [
             'status' => 'error',
-            'message' => __('Не удалось выполнить операцию')
+            'message' => __('messages.account.errors.action')
         ];
     }
 
@@ -136,20 +161,57 @@ class ActionsController extends Controller
         if(isset($response['status']) && $response['status'] == 'ok')
             return [
                 'status' => 'success',
-                'message' => __('Операция успешно выполнена')
+                'message' => __('messages.account.success.action'),
+                'code' => $response['authCode'] ?? ''
             ];
 
         return [
             'status' => 'error',
-            'message' => __('Не удалось выполнить операцию')
+            'message' => __('messages.account.errors.action')
         ];
     }
 
-    private function __post($method, array $data, Request $request)
+    public function Settings(Request $request)
+    {
+        $response = $this->__post('getInfo', [], $request);
+       
+        if(isset($response['webhookUrls']))
+            return [
+                'status' => 'success',
+                'webhooks' => $response['webhookUrls']
+            ];
+    
+        return [
+            'status' => 'error',
+            'message' => __('messages.account.errors.action')
+        ];
+    }
+
+    public function updateSettings(Request $request)
+    {
+        $webhooks = explode('\n', $request->webhooks);
+
+        $response = $this->__post('updateAccount', [
+            'webhookUrls' => $webhooks
+        ], $request);
+       
+        if(isset($response['status']) && $response['status'] == 'ok')
+            return [
+                'status' => 'success',
+                'message' => __('messages.account.success.action')
+            ];
+    
+        return [
+            'status' => 'error',
+            'message' => __('messages.account.errors.action')
+        ];
+    }
+
+    private function __post(string $method, array $data = [], Request $request)
     {
         $user = $request->user();
 
-        $response = Http::post($this->__api($method), [
+        $response = Http::retry(3, 100)->post($this->__api($method), [
             'token' => $user->token,
             'login' => $request->login,
             'source' => $request->platform,
@@ -158,7 +220,6 @@ class ActionsController extends Controller
 
         return $response;
     }
-
     
     private function __api(string $method)
     {

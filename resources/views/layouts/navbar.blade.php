@@ -40,7 +40,7 @@
                 </button>
 
                 <button type="button" data-dropdown-toggle="apps-dropdown" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
-                    <span class="sr-only">Баланс</span>
+                    <span class="sr-only">{{ __('Balance') }}</span>
                     
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-6 h-6" viewBox="0 0 16 16">
                         <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z"/>
@@ -49,14 +49,14 @@
 
                 <div class="hidden z-20 z-50 max-w-sm my-4 overflow-hidden text-base list-none bg-white divide-y divide-gray-100 rounded shadow-lg dark:bg-gray-700 dark:divide-gray-600" id="apps-dropdown" data-popper-placement="bottom">
                     <div class="block px-4 py-2 text-base font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        Ваш баланс: {{ $user->balance ?? 0 }} руб.
+                        {{ __('Your balance') }}: {{ $user->balance ?? 0 }} {{ __('rub') }}.
                     </div>
                     <div class="p-4">
                         <a href="{{ route('balance') }}" class="block p-4 text-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="mx-auto mb-1 text-gray-500 w-7 h-7 dark:text-gray-400" viewBox="0 0 16 16">
                                 <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z"/>
                             </svg>
-                            <div class="text-sm font-medium text-gray-900 dark:text-white">Пополнить баланс</div>
+                            <div class="text-sm font-medium text-gray-900 dark:text-white">{{ __('Top up balance') }}</div>
                         </a>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                         </div>
                         <ul class="py-1" role="none">
                             <li>
-                                <a href="{{ route('logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Выйти</a>
+                                <a href="{{ route('logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">{{ __('Log out') }}</a>
                             </li>
                         </ul>
                     </div>

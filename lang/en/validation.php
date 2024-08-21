@@ -161,6 +161,8 @@ return [
     'ulid' => 'The :attribute field must be a valid ULID.',
     'uuid' => 'The :attribute field must be a valid UUID.',
 
+    'phone' => 'Enter the correct phone number.',
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines

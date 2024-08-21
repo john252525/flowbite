@@ -16,10 +16,7 @@ class AddController extends Controller
         $validator = Validator::make($request->all(), [
             'platform' => 'required|in:telegram,whatsapp',
             'login' => 'required|max:30'
-        ], [
-            'platform' => __('Необходимо выбрать платформу'),
-            'login' => __('Необходимо указать логин или номер телефона')
-        ]);
+        ], __('messages.account.validation.add'));
 
         if($validator->fails())
             return [
@@ -41,7 +38,7 @@ class AddController extends Controller
 
         return [
             'status' => 'error',
-            'message' => __('Не удалось добавить аккаунт')
+            'message' => __('messages.account.errors.action')
         ];
     }
 }

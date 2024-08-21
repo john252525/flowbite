@@ -19,16 +19,13 @@ class PaymentController extends Controller
         $request->validate([
             'amount' => ['required', 'numeric', 'min:10', 'max:50000'],
             'payment_system' => 'required|in:yookassa',
-        ], [
-            'amount' => __('Минимальная сумма пополнения от 10 руб и максимальная 50000 руб.'),
-            'payment_system' => __('Выбранная платежная система не найдена либо не выбрана')
-        ]);
+        ], __('messages.payment.validation'));
 
         switch($request->payment_system)
         {
             case 'yookassa':
                 if(config('settings.yookassa_id') == '' || config('settings.yookassa_key') == '')
-                    return back()->withErrors(__('Платежная система временно недоступна'));
+                    return back()->withErrors(__('messages.payment.empty_key_or_id'));
 
                 $response = $this->yookassa($request);
                 break;
@@ -49,7 +46,7 @@ class PaymentController extends Controller
     public function notifications(string $type)
     {
         if(!in_array($type, ['yookassa']))
-            return 'Платежная система не найдена';
+            return __('messages.payment.not_found');
 
         switch($type)
         {
@@ -84,7 +81,7 @@ class PaymentController extends Controller
                         'return_url' => 'https://'.$_SERVER['SERVER_NAME'].'/',
                     ),
                     'capture' => true,
-                    'description' => 'Пополнение баланса №'.$order,
+                    'description' => __('messages.payment.description').$order,
                 ),
                 uniqid('pay', true)
             );
@@ -94,14 +91,14 @@ class PaymentController extends Controller
                 'signature' => $payment['id'],
                 'payment_url' => $payment['confirmation']['confirmation_url'],
                 'amount' => $request->amount,
-                'description' => 'Пополнение баланса №'.$order,
+                'description' => __('messages.payment.description').$order,
             ];
         } catch (\Exception $e) {
             $response = $e;
 
             Log::debug($response);
 
-            return back()->withErrors(__('Пополнение с помощью данной платежной системы временно недоступна')); 
+            return back()->withErrors(__('messages.payment.inaccessible')); 
         }
     }
 

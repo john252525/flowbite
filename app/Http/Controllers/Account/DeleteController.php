@@ -21,12 +21,12 @@ class DeleteController extends Controller
         if(isset($response['status']) && $response['status'] == 'ok')
             return [
                 'status' => 'success',
-                'message' => 'Операция успешно выполнена'
+                'message' => __('messages.account.success.action')
             ];
 
         return [
             'status' => 'error',
-            'message' => 'Операция не выполнена'
+            'message' => __('messages.account.errors.action')
         ];
     }
 }

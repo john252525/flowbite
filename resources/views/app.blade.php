@@ -86,6 +86,7 @@
     @endauth
 
     @vite('resources/js/app.js')
+    <script src="{{ asset('assets/js/app.min.js') }}"></script>
     <script src="{{ asset('assets/js/ui/jolty.min.js') }}"></script>
 </body>
 </html>

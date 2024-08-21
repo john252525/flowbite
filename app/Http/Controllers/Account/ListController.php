@@ -23,6 +23,7 @@ class ListController extends Controller
 
         foreach($response['clients'] as $client) {
             $clients[$client['login']] = [
+                'step' => $client['step'] ?? '',
                 'state' => $client['state'] ? true : false,
             ];
         }

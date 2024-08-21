@@ -72,6 +72,6 @@ class SettingsController extends Controller
     
         $setting->save();
 
-        return back()->with('success', __('Поле добавлено'));
+        return back()->with('success', 'ok');
     }
 }

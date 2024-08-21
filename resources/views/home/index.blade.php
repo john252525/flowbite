@@ -1,7 +1,7 @@
 @extends('app', [
-'title' => 'Главная страница',
-'keywords' => '', # Ключевые слова
-'description' => '' # Описание страницы
+    'title' => __('Home page'),
+    'keywords' => '', # Ключевые слова
+    'description' => '' # Описание страницы
 ])
 
 @section('content')

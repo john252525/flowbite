@@ -82,17 +82,13 @@ class AuthController extends Controller
         $user = User::query()->where('email', $data['email'])->first();
         
         if(!$user)
-            return back()->withErrors(__('Неправильный логин или пароль'));
-        
-            // ([
-            //     'error' => __('Неправильный логин или пароль')
-            // ]);
+            return back()->withErrors(__('messages.auth.wrong_login_or_pass'));
 
         if(Auth::attempt(['email' => $data['email'], 'password' => $data['password']]))
             return redirect()->route('home');
 
         return back()->with([
-            'error' => __('Эти учетные данные не соответствуют нашим записям')
+            'error' => __('messages.auth.user_not_found')
         ]);
     } 
 
@@ -119,7 +115,7 @@ class AuthController extends Controller
 
         if(!$user)
             return back()->with([
-                'error' => __('Не удалось зарегистрироваться, пожалуйста, попробуйте ещё раз позже')
+                'error' => __('messages.auth.not_created')
             ]);
 
         Auth::login($user);
@@ -180,10 +176,7 @@ class AuthController extends Controller
             ]
         ];
 
-        return Validator::make($data, $validator[$type], [], [
-                'email' => __('почта'),
-                'password' => __('пароль')
-        ]);
+        return Validator::make($data, $validator[$type], [], __('messages.auth.validation'));
     }
 
     /**
