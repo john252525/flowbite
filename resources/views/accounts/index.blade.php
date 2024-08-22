@@ -216,7 +216,7 @@
                     <button class="ui-btn-close ui-popover-close" aria-label="Close" data-ui-dismiss></button>
                 </div>
                 @else
-                <a href="javascript:;" class="ui-dropdown-item {{ $classesHover[$action] ?? '' }}" data-ui-dropdown-item onclick="account.action('{{ $action }}', {login: '${login}'})">
+                <a href="javascript:;" class="ui-dropdown-item {{ $classesHover[$action] ?? '' }}" {{ $action === 'delete' ? 'data-ui-toggle=delete-account' : '' }} data-ui-dropdown-item onclick="account.action('{{ $action }}', {login: '${login}'})">
                     {{ __('messages.account.actions.'.$action) }}
                 </a>
                 @endif
