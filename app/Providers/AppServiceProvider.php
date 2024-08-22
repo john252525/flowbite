@@ -31,6 +31,10 @@ class AppServiceProvider extends ServiceProvider
             }
         }
 
+        if (env('FORCE_HTTPS', false)) {
+            URL::forceScheme('https');
+        }
+
         if(Cookie::get('lang'))
             $locale = explode('|', Crypt::decryptString(Cookie::get('lang')));
         
