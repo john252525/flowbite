@@ -11,7 +11,7 @@
                     </svg>
                 </button>
                 <a href="/" class="flex ml-2 md:mr-24">
-                    <img src="https://flowbite-admin-dashboard.vercel.app/images/logo.svg" class="h-8 mr-3" alt="Logo">
+                    <img src="https://static.tildacdn.com/tild3630-6562-4930-b532-356635636363/favicon.ico" class="h-8 mr-3" alt="Logo">
                     <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white hidden md:block">{{ config('app.name') }}</span>
                 </a>
                 <form action="#" method="GET" class="hidden lg:block lg:pl-3.5">
