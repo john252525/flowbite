@@ -32,7 +32,7 @@
     "Login": "Авторизоваться",
     "Remembered the password": "Вспомнили пароль",
     
-    "Authorization": "Авторизация",
+    "Sign in": "Войти",
     
     "E-mail": "Почта",
     "Password": "Пароль",
@@ -46,7 +46,7 @@
     "Confirm new password": "Подтверждение нового пароля",
     "Reset": "Сбросить",
     
-    "Registration": "Регистрация",
+    "Sign up": "Регистрация",
     "Confirm password": "Повторите пароль",
     "Register": "Зарегистрироваться",
     "There is an account": "Есть аккаунт",
